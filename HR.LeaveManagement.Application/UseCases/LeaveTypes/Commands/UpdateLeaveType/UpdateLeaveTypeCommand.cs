@@ -1,10 +1,9 @@
-﻿using HR.LeaveManagement.Application.DTOs.LeaveType;
-using HR.LeaveManagement.Application.Messaging;
-using MediatR;
+﻿using HR.LeaveManagement.Application.Messaging;
+using HR.LeaveManagement.Application.Responses;
 
 namespace HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.UpdateLeaveType
 {
-    public class UpdateLeaveTypeCommand : ICommand<Unit>
+    public class UpdateLeaveTypeCommand : ICommand<BaseCommandResponse>
     {
         public LeaveTypeDto LeaveTypeDto { get; set; }
     }
