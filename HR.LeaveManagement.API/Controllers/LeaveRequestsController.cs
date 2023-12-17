@@ -4,7 +4,6 @@ using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.DeleteLeave
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateLeaveRequest;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Queries.GetLeaveReqeustList;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Queries.GetLeaveRequestDetail;
-using HR.LeaveManagement.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +23,7 @@ public class LeaveRequestsController : ControllerBase
 
     // GET: api/<LeaveRequestsController>
     [HttpGet]
-    public async Task<ActionResult<IList<LeaveRequest>>> Get()
+    public async Task<ActionResult<IList<LeaveRequestListDto>>> Get()
     {
         var leaveRequests = await _mediator.Send(new GetLeaveRequestListQuery());
         return Ok(leaveRequests);

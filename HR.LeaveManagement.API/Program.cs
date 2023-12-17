@@ -1,3 +1,4 @@
+using HR.LeaveManagement.API;
 using HR.LeaveManagement.Application;
 using HR.LeaveManagement.Infrastructure;
 using HR.LeaveManagement.Persistance;
@@ -32,8 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseFluentValidationExceptionHandler();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
