@@ -1,4 +1,5 @@
-﻿using HR.LeaveManagement.Application.DTOs.LeaveType;
+﻿using HR.LeaveManagement.Application.Responses;
+using HR.LeaveManagement.Application.UseCases.LeaveTypes;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.CreateLeaveType;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.DeleteLeaveType;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.UpdateLeaveType;
@@ -39,7 +40,9 @@ public class LeaveTypesController : ControllerBase
 
     // POST api/<LeaveTypesController>
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] CreateLeaveTypeDto leaveType)
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveTypeDto leaveType)
     {
         var command = new CreateLeaveTypeCommand { LeaveTypeDto = leaveType };
         var response = await _mediator.Send(command);
@@ -47,8 +50,10 @@ public class LeaveTypesController : ControllerBase
     }
 
     // PUT api/<LeaveTypesController>
-    [HttpPut)]
-    public async Task<ActionResult> Put([FromBody] LeaveTypeDto leaveType)
+    [HttpPut]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] LeaveTypeDto leaveType)
     {
         var command = new UpdateLeaveTypeCommand { LeaveTypeDto = leaveType };
         await _mediator.Send(command);
