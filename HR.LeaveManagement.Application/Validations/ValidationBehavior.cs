@@ -26,7 +26,7 @@ namespace HR.LeaveManagement.Application.Validations
             CancellationToken cancellationToken)
         {
 
-            if (_validators.Any())
+            if (!_validators.Any())
             {
                 return await next();
             }
