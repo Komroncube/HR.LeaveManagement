@@ -22,7 +22,9 @@ public class LeaveTypesController : Controller
     // GET: LeaveTypesController/Details/5
     public async Task<ActionResult> Details(int id)
     {
-        return View();
+        var model = await _leaveTypeService.GetLeaveTypeDetailsAsync(id);
+
+        return View(model);
     }
 
     // GET: LeaveTypesController/Create
@@ -55,16 +57,19 @@ public class LeaveTypesController : Controller
     // GET: LeaveTypesController/Edit/5
     public async Task<ActionResult> Edit(int id)
     {
-        return View();
+        var model = await _leaveTypeService.GetLeaveTypeDetailsAsync(id);
+
+        return View(model);
     }
 
     // POST: LeaveTypesController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Edit(int id, IFormCollection collection)
+    public async Task<ActionResult> Edit(int id, LeaveTypeVM leaveTypeVM)
     {
         try
         {
+            var response = await _leaveTypeService.UpdateLeaveTypeAsync(leaveTypeVM)
             return RedirectToAction(nameof(Index));
         }
         catch
