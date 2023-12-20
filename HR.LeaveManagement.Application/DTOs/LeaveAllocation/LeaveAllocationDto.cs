@@ -1,5 +1,5 @@
 ﻿using HR.LeaveManagement.Application.DTOs.Common;
-using HR.LeaveManagement.Application.DTOs.LeaveType;
+using HR.LeaveManagement.Application.UseCases.LeaveTypes;
 
 namespace HR.LeaveManagement.Application.DTOs.LeaveAllocation
 {
