@@ -15,18 +15,18 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.CreateLeav
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateLeaveTypeDto> _validator;
-        public CreateLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepository, IMapper mapper, IValidator<CreateLeaveTypeDto> validations)
+        public CreateLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepository, IMapper mapper)
         {
             _leaveTypeRepository = leaveTypeRepository;
             _mapper = mapper;
-            _validator = validations;
+            //_validator = validations;
         }
         public async Task<BaseCommandResponse> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
 
             //validatsiya jarayoni(manimcha shart emas)
-
+            var _validator = new CreateLeaveTypeDtoValidator();
             var validationResult = await _validator.ValidateAsync(request.LeaveTypeDto, cancellationToken);
 
             if (!validationResult.IsValid)
