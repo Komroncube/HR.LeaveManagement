@@ -26,7 +26,7 @@ namespace HR.LeaveManagement.Persistance.Repositories
         {
             var leaveAllocation = await _dbContext.LeaveAllocations
                 .Include(x => x.LeaveType)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x=>x.Id == id);
             return leaveAllocation;
         }
     }
