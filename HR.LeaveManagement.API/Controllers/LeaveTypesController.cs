@@ -1,4 +1,5 @@
-﻿using HR.LeaveManagement.Application.Responses;
+﻿using HR.LeaveManagement.Application.Exceptions;
+using HR.LeaveManagement.Application.Responses;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.CreateLeaveType;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.DeleteLeaveType;
@@ -7,8 +8,6 @@ using HR.LeaveManagement.Application.UseCases.LeaveTypes.Queries.GetLeaveTypeDet
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Queries.GetLeaveTypeList;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HR.LeaveManagement.API.Controllers;
 [Route("api/[controller]")]
@@ -56,8 +55,26 @@ public class LeaveTypesController : ControllerBase
     public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] LeaveTypeDto leaveType)
     {
         var command = new UpdateLeaveTypeCommand { LeaveTypeDto = leaveType };
-        await _mediator.Send(command);
-        return NoContent();
+        try
+        {
+            var response = await _mediator.Send(command);
+            if(response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+        catch(NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     // DELETE api/<LeaveTypesController>/5
