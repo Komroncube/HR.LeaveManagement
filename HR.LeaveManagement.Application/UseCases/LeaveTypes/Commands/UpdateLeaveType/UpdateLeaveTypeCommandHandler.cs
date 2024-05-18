@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using HR.LeaveManagement.Application.Contracts.Persistance;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.Messaging;
 using HR.LeaveManagement.Application.Responses;
 using HR.LeaveManagement.Domain;
@@ -23,21 +24,19 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.UpdateLeav
         }
         public async Task<BaseCommandResponse> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
+            var leaveType = await _leaveTypeRepository.GetAsync(request.LeaveTypeDto.Id);
             var response = new BaseCommandResponse();
-
-
             var validationResult = await _validator.ValidateAsync(request.LeaveTypeDto, cancellationToken);
 
             if (!validationResult.IsValid)
             {
                 response.IsSuccess = false;
-                response.Message = "Update failed";
+                response.Message = "Validation error";
                 response.Errors = validationResult.Errors.Select(err => err.ErrorMessage).ToList();
             }
             else
-            {
-                var leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
-
+            {                
+                leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
                 leaveType = await _leaveTypeRepository.UpdateAsync(leaveType);
 
                 //response
