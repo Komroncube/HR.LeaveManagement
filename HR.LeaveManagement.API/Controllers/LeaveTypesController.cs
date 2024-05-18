@@ -31,26 +31,54 @@ public class LeaveTypesController : ControllerBase
 
     // GET api/<LeaveTypesController>/5
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<LeaveTypeDto>> Get(int id)
     {
-        var leaveType = await _mediator.Send(new GetLeaveTypeDetailQuery { Id = id });
-        return Ok(leaveType);
+        try
+        {
+            var leaveType = await _mediator.Send(new GetLeaveTypeDetailQuery { Id = id });
+            return Ok(leaveType);
+        }
+        catch(NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     // POST api/<LeaveTypesController>
     [HttpPost]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveTypeDto leaveType)
     {
-        var command = new CreateLeaveTypeCommand { LeaveTypeDto = leaveType };
-        var response = await _mediator.Send(command);
-        return Ok(response);
+        try
+        {
+            var command = new CreateLeaveTypeCommand { LeaveTypeDto = leaveType };
+            var response = await _mediator.Send(command);
+            if (response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     // PUT api/<LeaveTypesController>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] LeaveTypeDto leaveType)
     {
@@ -83,8 +111,19 @@ public class LeaveTypesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Delete(int id)
     {
-        var command = new DeleteLeaveTypeCommand { Id = id };
-        await _mediator.Send(command);
-        return NoContent();
+        try
+        {
+            var command = new DeleteLeaveTypeCommand { Id = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
+        catch(NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch
+        {
+            throw;
+        }
     }
 }

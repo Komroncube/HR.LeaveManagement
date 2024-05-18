@@ -21,10 +21,7 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.DeleteLeav
         public async Task<Unit> Handle(DeleteLeaveTypeCommand request, CancellationToken cancellationToken)
         {
             var leaveType = await _leaveTypeRepository.GetAsync(request.Id);
-            if (leaveType is null)
-            {
-                throw new NotFoundException(nameof(LeaveType), request.Id);
-            }
+            
             await _leaveTypeRepository.DeleteAsync(leaveType);
             return Unit.Value;
         }
