@@ -1,11 +1,13 @@
 ﻿using HR.LeaveManagement.Application.Contracts.Persistance;
+using HR.LeaveManagement.Application.Exceptions;
+using HR.LeaveManagement.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.Persistance.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseDomainEntity
     {
         private readonly LeaveManagementDbContext _dbContext;
 
