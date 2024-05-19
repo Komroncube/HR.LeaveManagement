@@ -7,8 +7,8 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateL
     public class UpdateLeaveRequestCommand : ICommand<Unit>
     {
         public int Id { get; set; }
-        public UpdateLeaveRequestDto UpdateLeaveRequestDto { get; set; }
+        public UpdateLeaveRequestDto? UpdateLeaveRequestDto { get; set; }
 
-        public ChangeLeaveReqeustApprovalDto ChangeLeaveReqeustApprovalDto { get; set; }
+        public ChangeLeaveRequestApprovalDto? ChangeLeaveRequestApprovalDto { get; set; }
     }
 }

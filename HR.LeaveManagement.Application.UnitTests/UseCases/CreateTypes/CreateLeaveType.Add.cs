@@ -12,7 +12,7 @@ public class CreateLeaveType
 {
     private readonly IMapper _mapper;
     private readonly IMock<ILeaveTypeRepository> _leaveTypeRepositoryMock;
-    private readonly Mock<IValidator<CreateLeaveTypeDtoValidator>> _validator;
+    private readonly IMock<IValidator<CreateLeaveTypeDto>> _validator;
     public CreateLeaveType()
     {
         _leaveTypeRepositoryMock = LeaveTypeRepositoryMock.GetMockLeaveTypeRepository();
@@ -23,7 +23,7 @@ public class CreateLeaveType
         _mapper = mapperConfig.CreateMapper();
 
 
-        _validator = new Mock<IValidator<CreateLeaveTypeDtoValidator>>(MockBehavior.Strict);
+        _validator = new Mock<IValidator<CreateLeaveTypeDto>>(MockBehavior.Strict);
 
     }
 
@@ -35,7 +35,7 @@ public class CreateLeaveType
             Name = "Kasal",
             DefaultDays = 1,
         };
-        var handler = new CreateLeaveTypeCommandHandler(_leaveTypeRepositoryMock.Object, _mapper);
+        var handler = new CreateLeaveTypeCommandHandler(_leaveTypeRepositoryMock.Object, _mapper, _validator.Object);
 
         await handler.Handle(new CreateLeaveTypeCommand { LeaveTypeDto = leaveType }, CancellationToken.None);
 
@@ -51,7 +51,7 @@ public class CreateLeaveType
             Name = "Kasal",
             DefaultDays = -1,
         };
-        var handler = new CreateLeaveTypeCommandHandler(_leaveTypeRepositoryMock.Object, _mapper);
+        var handler = new CreateLeaveTypeCommandHandler(_leaveTypeRepositoryMock.Object, _mapper, _validator.Object);
 
         await handler.Handle(new CreateLeaveTypeCommand { LeaveTypeDto = leaveType }, CancellationToken.None);
 

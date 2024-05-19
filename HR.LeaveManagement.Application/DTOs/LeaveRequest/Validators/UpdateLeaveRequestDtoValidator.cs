@@ -7,10 +7,11 @@ namespace HR.LeaveManagement.Application.DTOs.LeaveRequest.Validators
     {
         public UpdateLeaveRequestDtoValidator(ILeaveTypeRepository leaveTypeRepository)
         {
-            RuleFor(p => p.Id).NotNull().WithMessage("{PropertyName} must be present");
+            RuleFor(p => p.Id)
+                .NotNull().WithMessage("{PropertyName} must be present");
             RuleFor(p => p.RequestComments)
-                .NotEmpty().WithMessage("{PropertyName} is required")
-                .NotNull()
+                .NotNull().WithMessage("{PropertyName} is required")
+                .NotEmpty()
                 .MaximumLength(500);
             RuleFor(p => p.Cancelled).NotNull().WithMessage("{PropertyName} is required");
             Include(new ILeaveRequestDtoValidator(leaveTypeRepository));
