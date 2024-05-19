@@ -1,4 +1,5 @@
 ﻿using HR.LeaveManagement.Application.DTOs.LeaveRequest;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.CreateLeaveRequest;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.DeleteLeaveRequest;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateLeaveRequest;
@@ -31,10 +32,24 @@ public class LeaveRequestsController : ControllerBase
 
     // GET api/<LeaveRequestsController>/5
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<LeaveRequestDto>> Get(int id)
     {
-        var leaveRequest = await _mediator.Send(new GetLeaveRequestDetailQuery { Id = id });
-        return Ok(leaveRequest);
+        try
+        {
+
+            var leaveRequest = await _mediator.Send(new GetLeaveRequestDetailQuery { Id = id });
+            return Ok(leaveRequest);
+        }
+        catch(NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     // POST api/<LeaveRequestsController>
@@ -42,8 +57,15 @@ public class LeaveRequestsController : ControllerBase
     public async Task<ActionResult> Post([FromBody] CreateLeaveRequestDto leaveRequest)
     {
         var command = new CreateLeaveRequestCommand { LeaveRequestDto = leaveRequest };
-        var response = await _mediator.Send(command);
-        return Ok(response);
+        try
+        {
+            var response = await _mediator.Send(command);
+            return CreatedAtAction(nameof(Get), new { id = response }, response);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // PUT api/<LeaveRequestsController>/5
@@ -56,9 +78,9 @@ public class LeaveRequestsController : ControllerBase
     }
     // PUT api/<LeaveRequestsController>/changeapproval/5
     [HttpPut("changeapproval/{id}")]
-    public async Task<ActionResult> ChangeApproval(int id, [FromBody] ChangeLeaveReqeustApprovalDto leaveRequest)
+    public async Task<ActionResult> ChangeApproval(int id, [FromBody] ChangeLeaveRequestApprovalDto leaveRequest)
     {
-        var command = new UpdateLeaveRequestCommand { Id = id, ChangeLeaveReqeustApprovalDto = leaveRequest };
+        var command = new UpdateLeaveRequestCommand { Id = id, ChangeLeaveRequestApprovalDto = leaveRequest };
         var response = await _mediator.Send(command);
         return NoContent();
     }

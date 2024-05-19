@@ -27,9 +27,9 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateL
                 await _leaveRequestRepository.UpdateAsync(leaveRequest);
 
             }
-            else if (request.ChangeLeaveReqeustApprovalDto != null)
+            if (request.ChangeLeaveRequestApprovalDto != null)
             {
-                await _leaveRequestRepository.ChangeApprovalStatus(leaveRequest, request.ChangeLeaveReqeustApprovalDto.Approval);
+                await _leaveRequestRepository.ChangeApprovalStatus(leaveRequest, request.ChangeLeaveRequestApprovalDto.Approval);
             }
             return Unit.Value;
         }

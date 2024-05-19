@@ -1,4 +1,5 @@
 ﻿using HR.LeaveManagement.Application.Contracts.Persistance;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace HR.LeaveManagement.Persistance.Repositories
         {
             var leaveRequests = await _dbContext.LeaveRequests
                 .Include(x => x.LeaveType)
+                .AsNoTracking()
                 .ToListAsync();
             return leaveRequests;
         }
@@ -33,7 +35,12 @@ namespace HR.LeaveManagement.Persistance.Repositories
         {
             var leaveRequest = await _dbContext.LeaveRequests
                 .Include(x => x.LeaveType)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+            if(leaveRequest is null)
+            {
+                throw new NotFoundException(nameof(LeaveRequest), id);
+            }
             return leaveRequest;
         }
     }
