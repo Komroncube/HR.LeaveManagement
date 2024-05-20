@@ -57,7 +57,7 @@ namespace HR.LeaveManagement.Persistance.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveAllocations");
+                    b.ToTable("LeaveAllocations", (string)null);
                 });
 
             modelBuilder.Entity("HR.LeaveManagement.Domain.LeaveRequest", b =>
@@ -111,7 +111,7 @@ namespace HR.LeaveManagement.Persistance.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("HR.LeaveManagement.Domain.LeaveType", b =>
@@ -145,7 +145,7 @@ namespace HR.LeaveManagement.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeaveTypes");
+                    b.ToTable("LeaveTypes", (string)null);
 
                     b.HasData(
                         new

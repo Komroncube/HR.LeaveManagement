@@ -64,7 +64,7 @@ namespace HR.LeaveManagement.Persistance.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LeaveTypeId = table.Column<int>(type: "int", nullable: false),
                     DateRequested = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RequestCommnets = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RequestComments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateActioned = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Approved = table.Column<bool>(type: "bit", nullable: true),
                     Cancelled = table.Column<bool>(type: "bit", nullable: false),

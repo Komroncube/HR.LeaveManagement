@@ -103,7 +103,7 @@ namespace HR.LeaveManagement.Persistance.Migrations
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("RequestCommnets")
+                    b.Property<string>("RequestComments")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
