@@ -1,8 +1,10 @@
 ﻿using HR.LeaveManagement.Application.Contracts.Infrastructure;
 using HR.LeaveManagement.Application.Models;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System;
 using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.Infrastructure.Mail
@@ -26,9 +28,9 @@ namespace HR.LeaveManagement.Infrastructure.Mail
             };
 
             var message = MailHelper.CreateSingleEmail(from, to, email.Subject, email.Body, email.Body);
+            Console.WriteLine(JsonConvert.SerializeObject(message));
 
             var response = await client.SendEmailAsync(message);
-
             return response.IsSuccessStatusCode;
         }
     }

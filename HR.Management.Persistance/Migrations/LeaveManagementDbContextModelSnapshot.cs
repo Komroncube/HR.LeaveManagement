@@ -85,7 +85,9 @@ namespace HR.LeaveManagement.Persistance.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateRequested")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 5, 20, 21, 27, 45, 468, DateTimeKind.Local).AddTicks(4886));
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -102,7 +104,8 @@ namespace HR.LeaveManagement.Persistance.Migrations
 
                     b.Property<string>("RequestComments")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
