@@ -24,7 +24,8 @@ namespace HR.LeaveManagement.Application.Profiles
 
             CreateMap<LeaveRequest, LeaveRequestListDto>()
                 .ForPath(dest => dest.LeaveTypeDto.Name, opt => opt.MapFrom(src => src.LeaveType.Name))
-                .ForPath(dest => dest.LeaveTypeDto.DefaultDays, opt => opt.MapFrom(src => src.LeaveType.DefaultDays));
+                .ForPath(dest => dest.LeaveTypeDto.DefaultDays, opt => opt.MapFrom(src => src.LeaveType.DefaultDays))
+                .ForPath(dest => dest.LeaveTypeDto.Id, opt => opt.MapFrom(src => src.LeaveType.Id));
 
 
 
