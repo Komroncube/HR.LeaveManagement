@@ -20,7 +20,7 @@ namespace HR.LeaveManagement.Application.Profiles
             // LeaveRequest
             CreateMap<LeaveRequest, LeaveRequestDto>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestListDto>().ReverseMap();
-            CreateMap<LeaveRequest, CreateLeaveRequestDto>();
+            CreateMap<LeaveRequest, CreateLeaveRequestDto>().ReverseMap();
 
             CreateMap<LeaveRequest, LeaveRequestListDto>()
                 .ForPath(dest => dest.LeaveTypeDto.Name, opt => opt.MapFrom(src => src.LeaveType.Name))
