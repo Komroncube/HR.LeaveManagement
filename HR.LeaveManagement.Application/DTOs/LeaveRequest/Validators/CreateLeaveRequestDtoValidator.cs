@@ -7,10 +7,9 @@ namespace HR.LeaveManagement.Application.DTOs.LeaveRequest.Validators
     {
         public CreateLeaveRequestDtoValidator(ILeaveTypeRepository leaveTypeRepository)
         {
-            RuleFor(p => p.RequestComments)
-               .NotNull().WithMessage("{PropertyName} is required")
-               .NotEmpty()
-               .MaximumLength(500);
+            RuleFor(p=> p.RequestComments)
+                .NotEmpty().WithMessage("{PropertyName} is required")
+                .MaximumLength(500);
             Include(new ILeaveRequestDtoValidator(leaveTypeRepository));
         }
     }

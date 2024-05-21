@@ -32,9 +32,16 @@ namespace HR.LeaveManagement.Persistance.Repositories
 
         public async Task<bool> ExistsAsync(int id)
         {
-            var entity = await GetAsync(id);
-            return entity != null;
+            try { 
+                var entity = await GetAsync(id);
+            }
+            catch (NotFoundException)
+            {
+                return false;
+            }
+            return true;
         }
+
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
