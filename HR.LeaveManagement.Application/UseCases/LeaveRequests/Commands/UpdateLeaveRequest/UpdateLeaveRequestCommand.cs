@@ -1,5 +1,4 @@
-﻿using HR.LeaveManagement.Application.DTOs.LeaveRequest;
-using HR.LeaveManagement.Application.Messaging;
+﻿using HR.LeaveManagement.Application.Messaging;
 using MediatR;
 
 namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateLeaveRequest

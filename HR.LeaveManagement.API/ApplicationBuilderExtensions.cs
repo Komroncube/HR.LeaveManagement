@@ -14,9 +14,9 @@ public static class ApplicationBuilderExtensions
             x.Run(async context =>
             {
                 var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
-                var exception = errorFeature.Error;
+                var exception = errorFeature?.Error;
 
-                if (!(exception is ValidationException validationException))
+                if (exception is not ValidationException validationException)
                 {
                     throw exception;
                 }

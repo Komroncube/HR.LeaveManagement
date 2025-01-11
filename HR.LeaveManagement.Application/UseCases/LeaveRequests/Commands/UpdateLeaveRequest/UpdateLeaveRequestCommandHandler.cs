@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using HR.LeaveManagement.Application.Contracts.Persistance;
 using HR.LeaveManagement.Application.Messaging;
 using MediatR;
@@ -10,12 +11,16 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateL
     public class UpdateLeaveRequestCommandHandler : ICommandHandler<UpdateLeaveRequestCommand, Unit>
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
+        private readonly IValidator<UpdateLeaveRequestDto> validator;
         private readonly IMapper _mapper;
 
-        public UpdateLeaveRequestCommandHandler(ILeaveRequestRepository leaveRequestRepository, IMapper mapper)
+        public UpdateLeaveRequestCommandHandler(ILeaveRequestRepository leaveRequestRepository,
+                                                IMapper mapper,
+                                                IValidator<UpdateLeaveRequestDto> validator)
         {
             _leaveRequestRepository = leaveRequestRepository;
             _mapper = mapper;
+            this.validator = validator;
         }
 
         public async Task<Unit> Handle(UpdateLeaveRequestCommand request, CancellationToken cancellationToken)
@@ -23,11 +28,12 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateL
             var leaveRequest = await _leaveRequestRepository.GetAsync(request.Id);
             if (request.UpdateLeaveRequestDto != null)
             {
-                _mapper.Map(request, leaveRequest);
+                await validator.ValidateAndThrowAsync(request.UpdateLeaveRequestDto, cancellationToken: cancellationToken);
+                _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
                 await _leaveRequestRepository.UpdateAsync(leaveRequest);
 
             }
-            if (request.ChangeLeaveRequestApprovalDto != null)
+            else if (request.ChangeLeaveRequestApprovalDto != null)
             {
                 await _leaveRequestRepository.ChangeApprovalStatus(leaveRequest, request.ChangeLeaveRequestApprovalDto.Approval);
             }

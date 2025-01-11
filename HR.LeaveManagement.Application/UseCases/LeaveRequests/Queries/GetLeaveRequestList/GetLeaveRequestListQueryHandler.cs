@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HR.LeaveManagement.Application.Contracts.Persistance;
-using HR.LeaveManagement.Application.DTOs.LeaveRequest;
 using HR.LeaveManagement.Application.Messaging;
 using System.Collections.Generic;
 using System.Threading;
