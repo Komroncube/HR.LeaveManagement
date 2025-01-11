@@ -1,6 +1,6 @@
 ﻿using HR.LeaveManagement.Application.DTOs.Common;
 using System;
-namespace HR.LeaveManagement.Application.DTOs.LeaveRequest
+namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateLeaveRequest
 {
     public class UpdateLeaveRequestDto : BaseDto, IBaseLeaveRequestDto
     {

@@ -2,7 +2,7 @@
 using HR.LeaveManagement.Application.UseCases.LeaveTypes;
 using System;
 
-namespace HR.LeaveManagement.Application.DTOs.LeaveRequest
+namespace HR.LeaveManagement.Application.UseCases.LeaveRequests.Queries.GetLeaveRequestList
 {
     public class LeaveRequestListDto : BaseDto
     {

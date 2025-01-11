@@ -1,9 +1,7 @@
-﻿using HR.LeaveManagement.Application.DTOs.LeaveRequest;
-using HR.LeaveManagement.Application.Exceptions;
-using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.CreateLeaveRequest;
+﻿using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.CreateLeaveRequest;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.DeleteLeaveRequest;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Commands.UpdateLeaveRequest;
-using HR.LeaveManagement.Application.UseCases.LeaveRequests.Queries.GetLeaveReqeustList;
+using HR.LeaveManagement.Application.UseCases.LeaveRequests.Queries.GetLeaveRequestList;
 using HR.LeaveManagement.Application.UseCases.LeaveRequests.Queries.GetLeaveRequestDetail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,24 +30,10 @@ public class LeaveRequestsController : ControllerBase
 
     // GET api/<LeaveRequestsController>/5
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<LeaveRequestDto>> Get(int id)
     {
-        try
-        {
-
-            var leaveRequest = await _mediator.Send(new GetLeaveRequestDetailQuery { Id = id });
-            return Ok(leaveRequest);
-        }
-        catch(NotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch
-        {
-            throw;
-        }
+        var leaveRequest = await _mediator.Send(new GetLeaveRequestDetailQuery { Id = id });
+        return Ok(leaveRequest);
     }
 
     // POST api/<LeaveRequestsController>
@@ -57,15 +41,8 @@ public class LeaveRequestsController : ControllerBase
     public async Task<ActionResult> Post([FromBody] CreateLeaveRequestDto leaveRequest)
     {
         var command = new CreateLeaveRequestCommand { LeaveRequestDto = leaveRequest };
-        try
-        {
-            var response = await _mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { id = response }, response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 
     // PUT api/<LeaveRequestsController>/5

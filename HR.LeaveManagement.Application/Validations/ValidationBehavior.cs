@@ -10,7 +10,7 @@ namespace HR.LeaveManagement.Application.Validations
 {
     public sealed class ValidationBehavior<TRequest, TResponse>
         : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : class
     {
 
         private readonly IEnumerable<IValidator<TRequest>> _validators;

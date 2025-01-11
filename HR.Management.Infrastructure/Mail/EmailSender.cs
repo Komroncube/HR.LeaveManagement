@@ -1,5 +1,6 @@
 ﻿using HR.LeaveManagement.Application.Contracts.Infrastructure;
 using HR.LeaveManagement.Application.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SendGrid;
@@ -13,9 +14,11 @@ namespace HR.LeaveManagement.Infrastructure.Mail
     public class EmailSender : IEmailSender
     {
         private EmailSettings _emailSettings { get; }
-        public EmailSender(IOptions<EmailSettings> emailSettings)
+        private readonly ILogger<EmailSender> _logger;
+        public EmailSender(IOptions<EmailSettings> emailSettings, ILogger<EmailSender> logger)
         {
             _emailSettings = emailSettings.Value;
+            _logger = logger;
         }
         public async Task<bool> SendEmailAsync(Email email)
         {
@@ -28,10 +31,13 @@ namespace HR.LeaveManagement.Infrastructure.Mail
             };
 
             var message = MailHelper.CreateSingleEmail(from, to, email.Subject, email.Body, email.Body);
-            Console.WriteLine(JsonConvert.SerializeObject(message));
+            _logger.LogInformation($"Sending email: {JsonConvert.SerializeObject(message)}");
 
-            var response = await client.SendEmailAsync(message);
-            return response.IsSuccessStatusCode;
+            // Uncomment this line to send email
+            //var response = await client.SendEmailAsync(message);
+            //return response.IsSuccessStatusCode;
+
+            return true;
         }
     }
 }
