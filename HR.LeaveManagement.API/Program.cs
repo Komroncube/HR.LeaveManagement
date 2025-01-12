@@ -2,6 +2,7 @@ using HR.LeaveManagement.API;
 using HR.LeaveManagement.Application;
 using HR.LeaveManagement.Infrastructure;
 using HR.LeaveManagement.Persistance;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,11 @@ builder.Services.AddCors(options =>
         policy => policy.AllowAnyOrigin()
         .AllowAnyOrigin()
         .AllowAnyMethod());
+});
+
+builder.Services.AddMvcCore(options =>
+{
+    options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
 });
 
 var app = builder.Build();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using HR.LeaveManagement.Application.Contracts.Persistance;
 using HR.LeaveManagement.Application.Profiles;
 using HR.LeaveManagement.Application.UnitTests.Mocks;
@@ -12,7 +13,7 @@ public class CreateLeaveType
 {
     private readonly IMapper _mapper;
     private readonly IMock<ILeaveTypeRepository> _leaveTypeRepositoryMock;
-    private readonly IMock<IValidator<CreateLeaveTypeDto>> _validator;
+    private readonly Mock<IValidator<CreateLeaveTypeDto>> _validator;
     public CreateLeaveType()
     {
         _leaveTypeRepositoryMock = LeaveTypeRepositoryMock.GetMockLeaveTypeRepository();
@@ -35,6 +36,9 @@ public class CreateLeaveType
             Name = "Kasal",
             DefaultDays = 1,
         };
+        _validator.Setup(x => x.ValidateAsync(It.IsAny<CreateLeaveTypeDto>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+
         var handler = new CreateLeaveTypeCommandHandler(_leaveTypeRepositoryMock.Object, _mapper, _validator.Object);
 
         await handler.Handle(new CreateLeaveTypeCommand { LeaveTypeDto = leaveType }, CancellationToken.None);
@@ -51,6 +55,13 @@ public class CreateLeaveType
             Name = "Kasal",
             DefaultDays = -1,
         };
+
+        _validator.Setup(x => x.ValidateAsync(It.IsAny<CreateLeaveTypeDto>(), CancellationToken.None))
+            .ReturnsAsync(new ValidationResult(new List<ValidationFailure>
+            {
+                new ValidationFailure("DefaultDays", "DefaultDays must be greater than 0")
+            }));
+
         var handler = new CreateLeaveTypeCommandHandler(_leaveTypeRepositoryMock.Object, _mapper, _validator.Object);
 
         await handler.Handle(new CreateLeaveTypeCommand { LeaveTypeDto = leaveType }, CancellationToken.None);
