@@ -106,6 +106,7 @@ public class LeaveTypesController : ControllerBase
     }
 
     // DELETE api/<LeaveTypesController>/5
+    /// <response code="204" nullable="true">No data.</response>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
