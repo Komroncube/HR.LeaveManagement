@@ -36,10 +36,13 @@ public class AuthService : IAuthService
         {
             throw new NotFoundException(nameof(ApplicationUser), authRequest.Email);
         }
+        bool isSuccess = await userManager.CheckPasswordAsync(user, authRequest.Password);
 
-        SignInResult result = await signInManager.PasswordSignInAsync(user, authRequest.Password, false, false);
+        // TODO: Investigate null exception
+        // User was set null during seed data
+        //SignInResult result = await signInManager.PasswordSignInAsync(user.UserName, authRequest.Password, false, false);
         
-        if (!result.Succeeded)
+        if (!isSuccess)
         {
             throw new ApplicationException($"Credentials for '{authRequest.Email}' aren't valid");
         }
@@ -51,7 +54,7 @@ public class AuthService : IAuthService
             Id = user.Id,
             Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
             Email = user.Email,
-            UserName = user.UserName
+            UserName = user.NormalizedUserName
         };
 
         return authResponse;
@@ -71,7 +74,7 @@ public class AuthService : IAuthService
 
         IEnumerable<Claim> claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.NormalizedUserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim("uid", user.Id)

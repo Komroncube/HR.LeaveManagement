@@ -1,5 +1,6 @@
 using HR.LeaveManagement.API;
 using HR.LeaveManagement.Application;
+using HR.LeaveManagement.Identity;
 using HR.LeaveManagement.Infrastructure;
 using HR.LeaveManagement.Persistance;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -11,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerDoc();
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 builder.Services.ConfigurePersistanceServices(builder.Configuration);
+builder.Services.ConfigureIdentityServices(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -39,6 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseFluentValidationExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
