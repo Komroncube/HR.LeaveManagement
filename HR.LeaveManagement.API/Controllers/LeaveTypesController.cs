@@ -7,6 +7,7 @@ using HR.LeaveManagement.Application.UseCases.LeaveTypes.Commands.UpdateLeaveTyp
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Queries.GetLeaveTypeDetail;
 using HR.LeaveManagement.Application.UseCases.LeaveTypes.Queries.GetLeaveTypeList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR.LeaveManagement.API.Controllers;
@@ -23,6 +24,7 @@ public class LeaveTypesController : ControllerBase
 
     // GET: api/<LeaveTypesController>
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<List<LeaveTypeDto>>> Get()
     {
         var leaveTypes = await _mediator.Send(new GetLeaveTypeListQuery());
