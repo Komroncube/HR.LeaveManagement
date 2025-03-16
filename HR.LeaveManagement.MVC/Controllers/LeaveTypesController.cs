@@ -112,11 +112,11 @@ public class LeaveTypesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Allocate(int leaveTypeId)
+    public async Task<ActionResult> Allocate(int id)
     {
         try
         {
-            var response = await leaveAllocationService.CreateLeaveAllocations(leaveTypeId);
+            var response = await leaveAllocationService.CreateLeaveAllocations(id);
             if (response.IsSuccess)
             {
                 return RedirectToAction(nameof(Index));
