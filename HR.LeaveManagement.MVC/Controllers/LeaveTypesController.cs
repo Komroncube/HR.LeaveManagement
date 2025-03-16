@@ -1,8 +1,11 @@
 ﻿using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models;
+using HR.LeaveManagement.MVC.Services.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HR.LeaveManagement.MVC.Controllers;
+[Authorize(Roles = "Admin")]
 public class LeaveTypesController : Controller
 {
     private readonly ILeaveTypeService _leaveTypeService;
@@ -15,14 +18,14 @@ public class LeaveTypesController : Controller
     // GET: LeaveTypesController
     public async Task<ActionResult> Index()
     {
-        var leaveTypes = await _leaveTypeService.GetLeaveTypesAsync();
+        IEnumerable<LeaveTypeVM> leaveTypes = await _leaveTypeService.GetLeaveTypesAsync();
         return View(leaveTypes);
     }
 
     // GET: LeaveTypesController/Details/5
     public async Task<ActionResult> Details(int id)
     {
-        var model = await _leaveTypeService.GetLeaveTypeDetailsAsync(id);
+        LeaveTypeVM model = await _leaveTypeService.GetLeaveTypeDetailsAsync(id);
 
         return View(model);
     }
@@ -57,7 +60,7 @@ public class LeaveTypesController : Controller
     // GET: LeaveTypesController/Edit/5
     public async Task<ActionResult> Edit(int id)
     {
-        var model = await _leaveTypeService.GetLeaveTypeDetailsAsync(id);
+        LeaveTypeVM model = await _leaveTypeService.GetLeaveTypeDetailsAsync(id);
 
         return View(model);
     }
@@ -91,7 +94,7 @@ public class LeaveTypesController : Controller
     {
         try
         {
-            var response = await _leaveTypeService.DeleteLeaveTypeAsync(id);
+            Response<int> response = await _leaveTypeService.DeleteLeaveTypeAsync(id);
             if (response.IsSuccess)
             {
                 return RedirectToAction(nameof(Index));

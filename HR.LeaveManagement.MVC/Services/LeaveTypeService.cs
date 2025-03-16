@@ -19,8 +19,8 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
         {
             var response = new Response<int>();
             CreateLeaveTypeDto leaveTypeDto = _mapper.Map<CreateLeaveTypeDto>(leaveType);
-
-            var apiResponse = await _client.LeaveTypesPOSTAsync(leaveTypeDto);
+            AddBearerToken();
+            BaseCommandResponse apiResponse = await _client.LeaveTypesPOSTAsync(leaveTypeDto);
             if (apiResponse.IsSuccess)
             {
                 response.Data = apiResponse.Id;
@@ -28,7 +28,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
             }
             else
             {
-                foreach (var error in apiResponse.Errors)
+                foreach (string error in apiResponse.Errors)
                 {
                     response.ValidationErrors += error + Environment.NewLine;
                 }
@@ -36,7 +36,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
             return response;
         }
         catch (ApiException ex)
-        {
+        {    
             return ConvertApiExceptions<int>(ex);
         }
     }
@@ -45,6 +45,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
     {
         try
         {
+            AddBearerToken();
             await _client.LeaveTypesDELETEAsync(id);
             return new Response<int> { IsSuccess = true };
         }
@@ -56,14 +57,16 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
 
     public async Task<List<LeaveTypeVM>> GetLeaveTypesAsync()
     {
-        var leaveTypes = await _client.LeaveTypesAllAsync();
+        AddBearerToken();
+        ICollection<LeaveTypeDto> leaveTypes = await _client.LeaveTypesAllAsync();
         return _mapper.Map<List<LeaveTypeVM>>(leaveTypes);
 
     }
 
     public async Task<LeaveTypeVM> GetLeaveTypeDetailsAsync(int id)
     {
-        var leaveType = await _client.LeaveTypesGETAsync(id);
+        AddBearerToken();
+        LeaveTypeDto leaveType = await _client.LeaveTypesGETAsync(id);
         return _mapper.Map<LeaveTypeVM>(leaveType);
     }
 
@@ -71,7 +74,8 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
     {
         try
         {
-            LeaveTypeDto leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveType);
+            AddBearerToken();
+            var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveType);
             await _client.LeaveTypesPUTAsync(leaveTypeDto);
             return new Response<int> { IsSuccess = true };
         }
