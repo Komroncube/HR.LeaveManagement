@@ -60,9 +60,39 @@ public class AuthService : IAuthService
         return authResponse;
     }
 
-    public Task<RegistrationResponse> Register(RegistrationRequest registrationRequest)
+    public async Task<RegistrationResponse> Register(RegistrationRequest registrationRequest)
     {
-        throw new NotImplementedException();
+        var existingUser = await userManager.FindByEmailAsync(registrationRequest.Email);
+        if (existingUser != null)
+        {
+            throw new ApplicationException($"Email '{registrationRequest.Email}' is already registered");
+        }
+        var existingUserName = await userManager.FindByNameAsync(registrationRequest.UserName);
+        if (existingUserName != null) {
+            throw new ApplicationException($"Username '{registrationRequest.UserName}' is already taken");
+        }
+
+        var hasher = new PasswordHasher<ApplicationUser>();
+
+        var newUser = new ApplicationUser
+        {
+            FirstName = registrationRequest.FirstName,
+            LastName = registrationRequest.LastName,
+            Email = registrationRequest.Email,
+            UserName = registrationRequest.UserName,
+            PasswordHash = hasher.HashPassword(null, registrationRequest.Password)
+        };
+
+        var result = await userManager.CreateAsync(newUser, registrationRequest.Password);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(newUser, "User");
+            return new RegistrationResponse { UserId = newUser.Id };
+        }
+        else
+        {
+            throw new ApplicationException($"User registration failed. {result.Errors}");
+        }
     }
 
     private async Task<JwtSecurityToken> GenerateJwtToken(ApplicationUser user)
