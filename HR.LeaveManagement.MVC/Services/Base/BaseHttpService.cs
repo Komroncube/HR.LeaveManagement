@@ -4,7 +4,7 @@ namespace HR.LeaveManagement.MVC.Services.Base;
 
 public class BaseHttpService
 {
-    private readonly ICacheStorageService _cacheStorageService;
+    protected readonly ICacheStorageService _cacheStorageService;
     protected IClient _client;
 
     public BaseHttpService(ICacheStorageService cacheStorageService, IClient client)

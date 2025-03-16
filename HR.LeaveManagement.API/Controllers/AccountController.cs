@@ -16,14 +16,14 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] AuthRequest request)
+    public async Task<ActionResult<AuthResponse>> Login([FromBody] AuthRequest request)
     {
         AuthResponse response = await authService.Login(request);
         return Ok(response);
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegistrationRequest request)
+    public async Task<ActionResult<RegistrationResponse>> Register([FromBody] RegistrationRequest request)
     {
         RegistrationResponse response = await authService.Register(request);
         return Ok(response);

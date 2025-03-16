@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HR.LeaveManagement.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class LeaveTypesController : ControllerBase
 {
     private readonly IMediator _mediator;
