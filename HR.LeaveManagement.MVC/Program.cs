@@ -20,8 +20,9 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 
 builder.Services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:7087/"));
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddScoped<ICacheStorageService, CacheStorageService>();
+builder.Services.AddSingleton<ICacheStorageService, CacheStorageService>();
 builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();
+builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
 
 var app = builder.Build();
 

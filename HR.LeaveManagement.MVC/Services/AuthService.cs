@@ -30,7 +30,7 @@ public class AuthService : BaseHttpService, IAuthService
         try
         {
             AuthRequest authRequest = new() { Email = email, Password = password };
-            AuthResponse authResponse = await _client.LoginAsync(authRequest);
+            AuthResponse authResponse = await client.LoginAsync(authRequest);
 
             if (string.IsNullOrEmpty(authResponse.Token))
             {
@@ -41,7 +41,7 @@ public class AuthService : BaseHttpService, IAuthService
             var claims = ParseClaims(tokenContent);
             var user = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
             var login = httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, user);
-            _cacheStorageService.SetStorageValue("token", authResponse.Token);
+            cacheStorageService.SetStorageValue("token", authResponse.Token);
             return true;
         }
         catch
@@ -60,7 +60,7 @@ public class AuthService : BaseHttpService, IAuthService
     public async Task<bool> Register(RegisterVM register)
     {
         var registerRequest = mapper.Map<RegistrationRequest>(register);
-        var response = await _client.RegisterAsync(registerRequest);
+        var response = await client.RegisterAsync(registerRequest);
         if (string.IsNullOrEmpty(response.UserId))
         {
             return false;
@@ -70,7 +70,7 @@ public class AuthService : BaseHttpService, IAuthService
 
     public async Task Logout()
     {
-        _cacheStorageService.ClearStorage(new List<string> { "token" });
+        cacheStorageService.ClearStorage(new List<string> { "token" });
         await httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 }
