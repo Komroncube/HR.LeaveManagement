@@ -12,7 +12,7 @@ namespace HR.LeaveManagement.Application.UseCases.LeaveAllocations.Commands.Crea
                 .GreaterThan(0)
                 .MustAsync(async (id, token) =>
                 {
-                    return !await leaveTypeRepository.ExistsAsync(id);
+                    return await leaveTypeRepository.ExistsAsync(id);
                 })
                 .WithMessage("{PropertyName} does not exist.");
 
