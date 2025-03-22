@@ -4,13 +4,13 @@ namespace HR.LeaveManagement.MVC.Services.Base;
 
 public class BaseHttpService
 {
-    private readonly ICacheStorageService _cacheStorageService;
-    protected IClient _client;
+    protected readonly ICacheStorageService cacheStorageService;
+    protected IClient client;
 
     public BaseHttpService(ICacheStorageService cacheStorageService, IClient client)
     {
-        _cacheStorageService = cacheStorageService;
-        _client = client;
+        this.cacheStorageService = cacheStorageService;
+        this.client = client;
     }
     protected Response<Guid> ConvertApiExceptions<Guid>(ApiException ex)
     {
@@ -29,9 +29,9 @@ public class BaseHttpService
     }
     protected void AddBearerToken()
     {
-        if (_cacheStorageService.IsExists("token"))
+        if (cacheStorageService.IsExists("token"))
         {
-            _client.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _cacheStorageService.GetStorageValue<string>("token"));
+            client.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", cacheStorageService.GetStorageValue<string>("token"));
         }
     }
 }

@@ -19,8 +19,8 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
         {
             var response = new Response<int>();
             CreateLeaveTypeDto leaveTypeDto = _mapper.Map<CreateLeaveTypeDto>(leaveType);
-
-            BaseCommandResponse apiResponse = await _client.LeaveTypesPOSTAsync(leaveTypeDto);
+            AddBearerToken();
+            BaseCommandResponse apiResponse = await client.LeaveTypesPOSTAsync(leaveTypeDto);
             if (apiResponse.IsSuccess)
             {
                 response.Data = apiResponse.Id;
@@ -45,7 +45,8 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
     {
         try
         {
-            await _client.LeaveTypesDELETEAsync(id);
+            AddBearerToken();
+            await client.LeaveTypesDELETEAsync(id);
             return new Response<int> { IsSuccess = true };
         }
         catch (ApiException ex)
@@ -56,14 +57,16 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
 
     public async Task<List<LeaveTypeVM>> GetLeaveTypesAsync()
     {
-        ICollection<LeaveTypeDto> leaveTypes = await _client.LeaveTypesAllAsync();
+        AddBearerToken();
+        ICollection<LeaveTypeDto> leaveTypes = await client.LeaveTypesAllAsync();
         return _mapper.Map<List<LeaveTypeVM>>(leaveTypes);
 
     }
 
     public async Task<LeaveTypeVM> GetLeaveTypeDetailsAsync(int id)
     {
-        LeaveTypeDto leaveType = await _client.LeaveTypesGETAsync(id);
+        AddBearerToken();
+        LeaveTypeDto leaveType = await client.LeaveTypesGETAsync(id);
         return _mapper.Map<LeaveTypeVM>(leaveType);
     }
 
@@ -71,8 +74,9 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
     {
         try
         {
+            AddBearerToken();
             var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveType);
-            await _client.LeaveTypesPUTAsync(leaveTypeDto);
+            await client.LeaveTypesPUTAsync(leaveTypeDto);
             return new Response<int> { IsSuccess = true };
         }
         catch (ApiException ex)
