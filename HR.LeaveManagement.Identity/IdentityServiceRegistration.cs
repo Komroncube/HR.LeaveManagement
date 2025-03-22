@@ -32,6 +32,7 @@ public static class IdentityServiceRegistration
             .AddDefaultTokenProviders();
 
         services.AddTransient<IAuthService, AuthService>();
+        services.AddTransient<IUserService, UserService>();
 
         //Add auth schema
         services.AddAuthentication(options =>

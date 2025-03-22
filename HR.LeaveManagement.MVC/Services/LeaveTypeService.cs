@@ -20,7 +20,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
             var response = new Response<int>();
             CreateLeaveTypeDto leaveTypeDto = _mapper.Map<CreateLeaveTypeDto>(leaveType);
             AddBearerToken();
-            BaseCommandResponse apiResponse = await _client.LeaveTypesPOSTAsync(leaveTypeDto);
+            BaseCommandResponse apiResponse = await client.LeaveTypesPOSTAsync(leaveTypeDto);
             if (apiResponse.IsSuccess)
             {
                 response.Data = apiResponse.Id;
@@ -46,7 +46,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
         try
         {
             AddBearerToken();
-            await _client.LeaveTypesDELETEAsync(id);
+            await client.LeaveTypesDELETEAsync(id);
             return new Response<int> { IsSuccess = true };
         }
         catch (ApiException ex)
@@ -58,7 +58,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
     public async Task<List<LeaveTypeVM>> GetLeaveTypesAsync()
     {
         AddBearerToken();
-        ICollection<LeaveTypeDto> leaveTypes = await _client.LeaveTypesAllAsync();
+        ICollection<LeaveTypeDto> leaveTypes = await client.LeaveTypesAllAsync();
         return _mapper.Map<List<LeaveTypeVM>>(leaveTypes);
 
     }
@@ -66,7 +66,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
     public async Task<LeaveTypeVM> GetLeaveTypeDetailsAsync(int id)
     {
         AddBearerToken();
-        LeaveTypeDto leaveType = await _client.LeaveTypesGETAsync(id);
+        LeaveTypeDto leaveType = await client.LeaveTypesGETAsync(id);
         return _mapper.Map<LeaveTypeVM>(leaveType);
     }
 
@@ -76,7 +76,7 @@ public class LeaveTypeService : BaseHttpService, ILeaveTypeService
         {
             AddBearerToken();
             var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveType);
-            await _client.LeaveTypesPUTAsync(leaveTypeDto);
+            await client.LeaveTypesPUTAsync(leaveTypeDto);
             return new Response<int> { IsSuccess = true };
         }
         catch (ApiException ex)

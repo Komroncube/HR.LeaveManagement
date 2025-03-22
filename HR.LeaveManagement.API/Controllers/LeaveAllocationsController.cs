@@ -1,4 +1,5 @@
 ﻿using HR.LeaveManagement.Application.DTOs.LeaveAllocation;
+using HR.LeaveManagement.Application.Responses;
 using HR.LeaveManagement.Application.UseCases.LeaveAllocations.Commands.CreateLeaveAllocation;
 using HR.LeaveManagement.Application.UseCases.LeaveAllocations.Commands.DeleteLeaveAllocation;
 using HR.LeaveManagement.Application.UseCases.LeaveAllocations.Commands.UpdateLeaveAllocation;
@@ -39,7 +40,7 @@ public class LeaveAllocationsController : ControllerBase
 
     // POST api/<LeaveAllocationsController>
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] CreateLeaveAllocationDto LeaveAllocation)
+    public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateLeaveAllocationDto LeaveAllocation)
     {
         var command = new CreateLeaveAllocationCommand { LeaveAllocationDto = LeaveAllocation };
         var response = await _mediator.Send(command);
