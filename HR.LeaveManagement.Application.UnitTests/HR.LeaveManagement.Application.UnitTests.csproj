@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HR.LeaveManagement.Application\HR.LeaveManagement.Application.csproj" />
+    <ProjectReference Include="..\HR.LeaveManagement.API\HR.LeaveManagement.API.csproj" />
   </ItemGroup>
 
 </Project>
